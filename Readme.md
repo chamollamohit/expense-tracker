@@ -11,17 +11,9 @@ A sleek, full-stack web application for tracking personal expenses. Built with a
 
 <br>
 
-<div align="center">
-  <a href="https://expense-tracker-sl0v.onrender.com" style="text-decoration: none;">
-    <span style="background-color: #2563EB; color: white; padding: 14px 28px; border-radius: 8px; font-size: 18px; font-weight: bold; display: inline-block;">
-      🚀 View Live Demo
-    </span>
-  </a>
-</div>
+[![View Live Demo](https://img.shields.io/badge/View_Live_Demo-2563EB?style=for-the-badge&logo=rocket&logoColor=white)](https://expense-tracker-sl0v.onrender.com)
 
 <br>
-
-![alt text](image.png)
 
 ## ✨ Core Features
 
