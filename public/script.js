@@ -4,8 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const expenseList = document.getElementById('expense-list');
     const totalAmountValue = document.getElementById('total-amount-value');
     const resetButton = document.getElementById('reset-btn');
+    const logoutButton = document.getElementById('logout-btn')
 
-    const API_URL = '/api/expense';
+    const API_URL = '/api/expenses';
 
     // Fetch Expenses from the DB
     async function fetchExpenses() {
@@ -15,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error("Something Went wrong while getting API Response")
             }
             const expense = await response.json()
-
+            
             expenseList.innerHTML = ""
             const expenseAll = Array.from(expense.data)
             let totalExpense = 0
@@ -26,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 expenseAll.forEach((selectedExpense) => {
                     totalExpense += selectedExpense.amount
-                    
+
                     const item = document.createElement('li');
                     item.innerHTML = `
                             <div class="flex items-center justify-between p-4 bg-slate-50 border rounded-lg shadow-sm hover:shadow-md transition-shadow">
@@ -51,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
             expenseList.innerHTML = `<p class="text-red-500 text-center py-4">Could not load expenses.</p>`;
         }
     }
-// Event listner to add expense
+    // Event listner to add expense
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
         const description = document.getElementById('description').value;
@@ -66,8 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             await fetch(API_URL, {
                 method: "POST",
-                headers: {"Content-Type": 'application/json'},
-                body: JSON.stringify({ description, amount, category}) // it sends the data in body in string format as data is in Object type which cannot be send 
+                headers: { "Content-Type": 'application/json' },
+                body: JSON.stringify({ description, amount, category }) // it sends the data in body in string format as data is in Object type which cannot be send 
             })
             form.reset()
             fetchExpenses();
@@ -76,12 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-// Event listner to delete Expense
+    // Event listner to delete Expense
     expenseList.addEventListener('click', async (event) => {
-        if(event.target.classList.contains('delete-btn')){
+        if (event.target.classList.contains('delete-btn')) {
             const id = event.target.getAttribute('data-id');
             try {
-                await fetch(`${API_URL}/${id}`, {method: "DELETE"})
+                await fetch(`${API_URL}/${id}`, { method: "DELETE" })
                 fetchExpenses();
             } catch (error) {
                 console.error('Error deleting expense:', error);
@@ -90,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     })
 
-// Event listner to Reset Expense Tracker
+    // Event listner to Reset Expense Tracker
     resetButton.addEventListener('click', async () => {
         const isConfirmed = confirm('Are you sure you want to reset the tracker? This will delete all expenses permanently.');
         if (isConfirmed) {
@@ -101,9 +102,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Error resetting tracker:', error);
             }
         }
-    
+
+    })
+    // --- 2. ADD THE LOGOUT EVENT LISTENER ---
+    logoutButton.addEventListener('click', async () => {
+        try {
+            const response = await fetch('/api/logout', { method: 'POST' });
+
+            if (response.ok) {
+                // Redirect to login page on successful logout
+                window.location.href = '/login';
+            } else {
+                alert('Logout failed. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error during logout:', error);
+            alert('An error occurred during logout.');
+        }
     })
 
-    fetchExpenses();
+        fetchExpenses();
 
-})
+    })
